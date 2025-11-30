@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-// const authStore = useAuthStore();
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -12,14 +12,14 @@
         <p class="py-6">
           Keep track of your home maintenance schedule with a simple application that tracks each piece of your house, for you.
         </p>
-        <!-- <AuthButton v-if="!authStore.user" />
+        <AuthButton v-if="!authStore.user" />
         <NuxtLink
           v-else
           to="/dashboard"
           class="btn btn-primary"
         >
           Start Logging
-        </NuxtLink> -->
+        </NuxtLink>
       </div>
     </div>
   </div>
