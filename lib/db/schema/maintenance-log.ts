@@ -1,5 +1,6 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+import { user } from "./auth";
 import { houseComponent } from "./house-component";
 
 export const maintenanceLog = sqliteTable("maintenanceLog", {
@@ -9,6 +10,7 @@ export const maintenanceLog = sqliteTable("maintenanceLog", {
   startedAt: int(),
   endedAt: int(),
   componentId: int().notNull().references(() => houseComponent.id, { onDelete: "cascade" }),
+  userId: int().notNull().references(() => user.id, { onDelete: "cascade" }),
   createdAt: int().notNull().$default(() => Date.now()),
   updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
