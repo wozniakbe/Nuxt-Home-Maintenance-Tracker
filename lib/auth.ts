@@ -10,7 +10,8 @@ export const auth = betterAuth({
   }),
   advanced: {
     database: {
-      generateId: false, // "serial" for auto-incrementing numeric IDs
+      // TODO: something not working here on production
+      generateId: "serial", // "serial" for auto-incrementing numeric IDs
     },
   },
   socialProviders: {
