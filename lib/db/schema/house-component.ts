@@ -9,7 +9,7 @@ export const houseComponent = sqliteTable("houseComponent", {
   description: text(),
   floor: int().notNull(),
   room: text().notNull(),
-  userId: int().notNull().references(() => user.id),
+  userId: text().notNull().references(() => user.id),
   createdAt: int().notNull().$default(() => Date.now()),
   updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });

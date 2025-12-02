@@ -8,12 +8,6 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "sqlite",
   }),
-  advanced: {
-    database: {
-      // TODO: something not working here on production
-      generateId: "serial", // "serial" for auto-incrementing numeric IDs
-    },
-  },
   socialProviders: {
     github: {
       clientId: env.AUTH_GITHUB_CLIENT_ID as string,
