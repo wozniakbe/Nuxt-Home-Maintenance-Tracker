@@ -25,4 +25,4 @@ jobs:
         with:
           node-version: 22.x
       - run: npm install
-      - run: npm lint
+      - run: npm run lint
