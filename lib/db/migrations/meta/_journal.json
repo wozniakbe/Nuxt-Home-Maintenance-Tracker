@@ -8,6 +8,13 @@
       "when": 1764716870547,
       "tag": "0000_loud_sandman",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1766610290908,
+      "tag": "0001_legal_jane_foster",
+      "breakpoints": true
     }
   ]
 }
