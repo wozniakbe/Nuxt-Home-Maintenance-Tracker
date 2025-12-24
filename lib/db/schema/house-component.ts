@@ -1,3 +1,5 @@
+import type { z } from "zod";
+
 import { int, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 
@@ -29,3 +31,5 @@ export const InsertHouseComponent = createInsertSchema(houseComponent, {
   createdAt: true,
   updatedAt: true,
 });
+
+export type InsertHouseComponent = z.infer<typeof InsertHouseComponent>;
