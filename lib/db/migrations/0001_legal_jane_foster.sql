@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `houseComponent_name_userId_unique` ON `houseComponent` (`name`,`user_id`);
