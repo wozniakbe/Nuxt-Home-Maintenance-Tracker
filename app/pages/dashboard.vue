@@ -39,7 +39,7 @@ function toggleSidebar() {
         />
         <SidebarButton
           :show-label="isSidebarOpen"
-          label="Add Task"
+          label="Add Maintenance Item"
           icon="tabler:circle-plus-filled"
           href="/dashboard/add"
         />
@@ -52,7 +52,9 @@ function toggleSidebar() {
         />
       </div>
     </div>
-    <div class="flex-1" />
+    <div class="flex-1">
+      <NuxtPage />
+    </div>
   </div>
 </template>
 

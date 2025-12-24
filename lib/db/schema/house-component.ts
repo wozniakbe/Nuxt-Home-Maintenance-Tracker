@@ -1,4 +1,5 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { createInsertSchema } from "drizzle-zod";
 
 import { user } from "./auth";
 
@@ -12,4 +13,17 @@ export const houseComponent = sqliteTable("houseComponent", {
   userId: text().notNull().references(() => user.id),
   createdAt: int().notNull().$default(() => Date.now()),
   updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
+});
+
+export const InsertHouseComponent = createInsertSchema(houseComponent, {
+  name: field => field.min(1).max(100),
+  description: field => field.max(1000),
+  floor: field => field.min(0).max(2),
+  room: field => field.min(0).max(100),
+}).omit({
+  id: true,
+  slug: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
 });
