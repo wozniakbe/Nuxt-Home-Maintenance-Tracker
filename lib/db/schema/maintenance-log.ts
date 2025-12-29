@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 import { user } from "./auth";
@@ -14,3 +15,10 @@ export const maintenanceLog = sqliteTable("maintenanceLog", {
   createdAt: int().notNull().$default(() => Date.now()),
   updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
+
+export const maintenanceLogRelations = relations(maintenanceLog, ({ one }) => ({
+  component: one(houseComponent, {
+    fields: [maintenanceLog.componentId],
+    references: [houseComponent.id],
+  }),
+}));

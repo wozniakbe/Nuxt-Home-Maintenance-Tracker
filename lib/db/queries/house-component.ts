@@ -8,6 +8,15 @@ import db from "..";
 
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 5);
 
+export async function findHouseComponent(slug: string, userId: string) {
+  return db.query.houseComponent.findFirst({
+    where: and(eq(houseComponent.slug, slug), eq(houseComponent.userId, userId)),
+    with: {
+      maintenanceLogs: true,
+    },
+  });
+}
+
 export async function findHouseComponents(userId: string) {
   return db.query.houseComponent.findMany({
     where: eq(houseComponent.userId, userId),

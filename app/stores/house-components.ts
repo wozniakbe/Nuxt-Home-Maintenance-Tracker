@@ -12,7 +12,7 @@ export const useHouseComponentsStore = defineStore("useHouseComponentsStore", ()
         id: `component-${comp.id}`,
         label: comp.name,
         icon: "tabler:binoculars-filled",
-        href: "#",
+        to: { name: "dashboard-house-component-slug", params: { slug: comp.slug } },
       }));
     }
     sidebarStore.loading = status.value === "pending";
