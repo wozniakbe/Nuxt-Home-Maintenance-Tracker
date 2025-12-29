@@ -2,15 +2,10 @@ import type { DrizzleError } from "drizzle-orm";
 
 import { findHouseComponentByName, findUniqueSlug, insertHouseComponent } from "~~/lib/db/queries/house-component";
 import { InsertHouseComponent } from "~~/lib/db/schema";
+import defineAuthenticatedEventHandler from "~~/utils/define-authenticated-event-handler";
 import slugify from "slug";
 
-export default defineEventHandler(async (event) => {
-  if (!event.context.user) {
-    return sendError(event, createError({
-      statusCode: 401,
-      statusMessage: "Unauthorized",
-    }));
-  }
+export default defineAuthenticatedEventHandler(async (event) => {
   const result = await readValidatedBody(event, InsertHouseComponent.safeParse);
 
   if (!result.success) {
