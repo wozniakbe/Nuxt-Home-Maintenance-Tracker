@@ -60,7 +60,7 @@ function toggleSidebar() {
             :show-label="isSidebarOpen"
             :label="item.label"
             :icon="item.icon"
-            :href="item.href"
+            :to="item.to"
           />
         </div>
         <div class="divider" />

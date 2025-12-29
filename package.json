@@ -11,6 +11,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "typecheck": "nuxi typecheck",
     "prepare": "husky",
     "test": "npx vitest"
   },
@@ -57,7 +58,8 @@
     "lint-staged": "^16.2.3",
     "playwright-core": "^1.56.0",
     "tsx": "^4.21.0",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "vue-tsc": "^3.2.1"
   },
   "lint-staged": {
     "*": "npm run lint"
