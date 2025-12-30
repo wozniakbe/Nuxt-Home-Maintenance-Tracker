@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 const houseComponentsStore = useHouseComponentsStore();
-const { houseComponents, status } = storeToRefs(houseComponentsStore);
+const { houseComponents, houseComponentsStatus: status } = storeToRefs(houseComponentsStore);
 
 onMounted(() => {
-  houseComponentsStore.refresh();
+  houseComponentsStore.refreshHouseComponents();
 });
 </script>
 

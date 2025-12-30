@@ -22,3 +22,5 @@ export const maintenanceLogRelations = relations(maintenanceLog, ({ one }) => ({
     references: [houseComponent.id],
   }),
 }));
+
+export type SelectMaintenanceLog = typeof maintenanceLog.$inferSelect;

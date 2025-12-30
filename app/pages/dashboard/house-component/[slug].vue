@@ -1,8 +1,13 @@
 <script lang="ts" setup>
-const route = useRoute();
-const { slug } = route.params;
-const { data: houseComponent, status, error } = await useFetch(`/api/house-components/${slug}`, {
-  lazy: true,
+const houseComponentsStore = useHouseComponentsStore();
+const {
+  currentHouseComponent: houseComponent,
+  currentHouseComponentStatus: status,
+  currentHouseComponentError: error,
+} = storeToRefs(houseComponentsStore);
+
+onMounted(() => {
+  houseComponentsStore.refreshCurrentHouseComponent();
 });
 </script>
 
