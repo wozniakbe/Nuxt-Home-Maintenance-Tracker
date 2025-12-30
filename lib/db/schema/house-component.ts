@@ -4,6 +4,8 @@ import { relations } from "drizzle-orm";
 import { int, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 
+import type { SelectMaintenanceLog } from "./maintenance-log";
+
 import { user } from "./auth";
 import { maintenanceLog } from "./maintenance-log";
 
@@ -39,3 +41,7 @@ export const InsertHouseComponent = createInsertSchema(houseComponent, {
 });
 
 export type InsertHouseComponent = z.infer<typeof InsertHouseComponent>;
+export type SelectHouseComponent = typeof houseComponent.$inferSelect;
+export type SelectHouseComponentWithLogs = SelectHouseComponent & {
+  maintenanceLogs: SelectMaintenanceLog[];
+};
