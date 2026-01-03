@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { InsertHouseComponent } from "~~/lib/db/schema";
+import { InsertMaintenanceLog } from "~~/lib/db/schema";
 
 const props = defineProps<{
-  initialValues?: InsertHouseComponent;
-  onSubmit: (houseComponent: InsertHouseComponent) => Promise<any>;
+  initialValues?: InsertMaintenanceLog;
+  onSubmit: (houseComponent: InsertMaintenanceLog) => Promise<any>;
   onSubmitComplete: () => void;
   submitLabel: string;
   submitIcon: string;
@@ -18,7 +18,7 @@ const props = defineProps<{
     :on-submit-complete="props.onSubmitComplete"
     :submit-label="props.submitLabel"
     :submit-icon="props.submitIcon"
-    :schema="InsertHouseComponent"
+    :schema="InsertMaintenanceLog"
   >
     <AppFormField
       :disabled="loading"
@@ -33,18 +33,19 @@ const props = defineProps<{
       :error="errors.description"
       type="textarea"
     />
-    <AppFormField
+    <AppDateFormField
       :disabled="loading"
-      name="floor"
-      label="Floor"
-      :error="errors.floor"
-      type="number"
+      name="startedAt"
+      label="Started At"
+      :value="Date.now() - (24 * 60 * 60 * 1000)"
+      :error="errors.startedAt"
     />
-    <AppFormField
+    <AppDateFormField
       :disabled="loading"
-      name="room"
-      label="Room"
-      :error="errors.room"
+      name="endedAt"
+      label="Ended At"
+      :value="Date.now() - (24 * 60 * 60 * 1000)"
+      :error="errors.ended"
     />
   </HouseComponentBaseForm>
 </template>

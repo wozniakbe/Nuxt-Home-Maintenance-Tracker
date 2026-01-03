@@ -6,6 +6,7 @@ import { createInsertSchema } from "drizzle-zod";
 
 import type { SelectMaintenanceLog } from "./maintenance-log";
 
+import { DescriptionSchema, FloorSchema, NameSchema, RoomSchema } from "../zod-schemas";
 import { user } from "./auth";
 import { maintenanceLog } from "./maintenance-log";
 
@@ -28,10 +29,10 @@ export const houseComponentRelations = relations(houseComponent, ({ many }) => (
 }));
 
 export const InsertHouseComponent = createInsertSchema(houseComponent, {
-  name: field => field.min(1).max(100),
-  description: field => field.max(1000),
-  floor: field => field.min(0).max(2),
-  room: field => field.min(0).max(100),
+  name: NameSchema,
+  description: DescriptionSchema,
+  floor: FloorSchema,
+  room: RoomSchema,
 }).omit({
   id: true,
   slug: true,
