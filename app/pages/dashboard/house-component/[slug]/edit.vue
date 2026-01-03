@@ -23,7 +23,7 @@ function onSubmitComplete() {
 
 <template>
   <HouseComponentForm
-    v-if="houseComponentsStore.currentHouseComponentStatus !== 'pending'"
+    v-if="houseComponentsStore.currentHouseComponentStatus !== 'pending' && houseComponentsStore.currentHouseComponent"
     :on-submit
     :on-submit-complete
     :initial-values="houseComponentsStore.currentHouseComponent"

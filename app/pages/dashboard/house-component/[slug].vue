@@ -91,15 +91,27 @@ onBeforeRouteUpdate((to) => {
       <p class="text-sm">
         {{ houseComponent?.description }}
       </p>
+      <p class="text-sm">
+        Floor: {{ houseComponent?.floor }}
+      </p>
+      <p class="text-sm">
+        Room: {{ houseComponent?.room }}
+      </p>
       <div v-if="!houseComponent.maintenanceLogs.length" class="mt-4">
-        <p v-if="!houseComponent.maintenanceLogs.length" class="text-sm italic">
+        <p class="text-sm italic">
           Add a maintenance log to get started.
         </p>
+        <NuxtLink
+          class="btn btn-primary mt-2"
+          :to="{
+            name: 'dashboard-house-component-slug-add',
+            params: { slug: route.params.slug },
+          }"
+        >
+          Add Maintenance Log
+          <Icon name="tabler:circle-plus-filled" size="24" />
+        </NuxtLink>
       </div>
-      <button class="btn btn-primary mt-2">
-        Add Maintenance Log
-        <Icon name="tabler:circle-plus-filled" size="24" />
-      </button>
     </div>
     <div v-if="route.name !== 'dashboard-house-component-slug'">
       <NuxtPage />
