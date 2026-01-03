@@ -3,23 +3,14 @@ import type { DrizzleError } from "drizzle-orm";
 import { findHouseComponentByName, findUniqueSlug, insertHouseComponent } from "~~/lib/db/queries/house-component";
 import { InsertHouseComponent } from "~~/lib/db/schema";
 import defineAuthenticatedEventHandler from "~~/utils/define-authenticated-event-handler";
+import sendZodError from "~~/utils/send-zod-error";
 import slugify from "slug";
 
 export default defineAuthenticatedEventHandler(async (event) => {
   const result = await readValidatedBody(event, InsertHouseComponent.safeParse);
 
   if (!result.success) {
-    const statusMessage = result.error.issues.map(issue => `${issue.path.join("")}: ${issue.message}`).join("; ");
-    const data = result.error.issues.reduce((errors, issue) => {
-      errors[issue.path.join("")] = issue.message;
-      return errors;
-    }, {} as Record<string, string>);
-
-    return sendError(event, createError({
-      statusCode: 422,
-      statusMessage,
-      data,
-    }));
+    return sendZodError(event, result.error);
   }
 
   const existingComponent = await findHouseComponentByName(result.data, event.context.user.id);

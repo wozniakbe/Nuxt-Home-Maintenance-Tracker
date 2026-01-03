@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const route = useRoute();
 const houseComponentsStore = useHouseComponentsStore();
 const {
   currentHouseComponent: houseComponent,
@@ -9,6 +10,12 @@ const {
 onMounted(() => {
   houseComponentsStore.refreshCurrentHouseComponent();
 });
+
+onBeforeRouteUpdate((to) => {
+  if (to.name === "dashboard-house-component-slug") {
+    houseComponentsStore.refreshCurrentHouseComponent();
+  }
+});
 </script>
 
 <template>
@@ -16,7 +23,13 @@ onMounted(() => {
     <div v-if="status === 'pending'">
       <div class="loading" />
     </div>
-    <div v-if="houseComponent && status !== 'pending'">
+    <div v-if="error && status !== 'pending'" class="alert alert-error">
+      <h2 class="text-lg">
+        {{ error.statusMessage }}
+      </h2>
+    </div>
+
+    <div v-if="route.name === 'dashboard-house-component-slug' && houseComponent && status !== 'pending'">
       <h2 class="text-xl">
         {{ houseComponent?.name }}
       </h2>
@@ -33,10 +46,8 @@ onMounted(() => {
         <Icon name="tabler:circle-plus-filled" size="24" />
       </button>
     </div>
-    <div v-if="error && status !== 'pending'" class="alert alert-error">
-      <h2 class="text-lg">
-        {{ error.statusMessage }}
-      </h2>
+    <div v-if="route.name !== 'dashboard-house-component-slug'">
+      <NuxtPage />
     </div>
   </div>
 </template>

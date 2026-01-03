@@ -1,15 +1,22 @@
 import type { SelectHouseComponentWithLogs } from "~~/lib/db/schema";
 
-const listHouseComponentsInSidebar = new Set(["dashboard", "dashboard-add"]);
-const listCurrentHouseComponentInSidebar = new Set(["dashboard-house-component-slug", "dashboard-house-component-add", "dashboard-house-component-edit"]);
+import { CURRENT_HOUSE_COMPONENT_PAGES, HOUSE_COMPONENT_PAGES } from "~~/lib/constants";
 
 export const useHouseComponentsStore = defineStore("useHouseComponentsStore", () => {
   const route = useRoute();
 
-  const { data: houseComponents, status: houseComponentsStatus, refresh: refreshHouseComponents } = useFetch("/api/house-components", {
+  const {
+    data: houseComponents,
+    status: houseComponentsStatus,
+    refresh: refreshHouseComponents,
+  } = useFetch("/api/house-components", {
     lazy: true,
   });
-  const componentUrlWithSlug = computed(() => `/api/house-components/${route.params.slug}`);
+  const componentUrlWithSlug = computed(() => {
+    if (!route.params.slug)
+      return "/api/bug";
+    return `/api/house-components/${route.params.slug}`;
+  });
   const {
     data: currentHouseComponent,
     status: currentHouseComponentStatus,
@@ -18,13 +25,12 @@ export const useHouseComponentsStore = defineStore("useHouseComponentsStore", ()
   } = useFetch<SelectHouseComponentWithLogs>(componentUrlWithSlug, {
     lazy: true,
     immediate: false,
-    watch: false,
   });
 
   const sidebarStore = useSidebarStore();
 
-  watchEffect(() => {
-    if (houseComponents.value && listHouseComponentsInSidebar.has(route.name?.toString() || "")) {
+  effect(() => {
+    if (houseComponents.value && HOUSE_COMPONENT_PAGES.has(route.name?.toString() || "")) {
       sidebarStore.loading = false;
       sidebarStore.sidebarItems = houseComponents.value.map(comp => ({
         id: `component-${comp.id}`,
@@ -33,7 +39,7 @@ export const useHouseComponentsStore = defineStore("useHouseComponentsStore", ()
         to: { name: "dashboard-house-component-slug", params: { slug: comp.slug } },
       }));
     }
-    else if (currentHouseComponent.value && listCurrentHouseComponentInSidebar.has(route.name?.toString() || "")) {
+    else if (currentHouseComponent.value && CURRENT_HOUSE_COMPONENT_PAGES.has(route.name?.toString() || "")) {
       sidebarStore.sidebarItems = [];
     }
     sidebarStore.loading = houseComponentsStatus.value === "pending";
