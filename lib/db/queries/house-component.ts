@@ -68,3 +68,11 @@ export async function updateHouseComponentBySlug(
   )).returning();
   return updated;
 }
+
+export async function removeHouseComponentBySlug(slug: string, userId: string) {
+  const deleted = await db.delete(houseComponent).where(and(
+    eq(houseComponent.slug, slug),
+    eq(houseComponent.userId, userId),
+  )).returning();
+  return deleted;
+}
