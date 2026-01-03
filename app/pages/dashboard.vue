@@ -1,20 +1,27 @@
 <script lang="ts" setup>
+import { CURRENT_HOUSE_COMPONENT_PAGES, EDIT_PAGES, HOUSE_COMPONENT_PAGES } from "~~/lib/constants";
+
 const isSidebarOpen = ref(true);
 const route = useRoute();
 const sidebarStore = useSidebarStore();
 const houseComponentsStore = useHouseComponentsStore();
 
-const { currentHouseComponent } = storeToRefs(houseComponentsStore);
+const { currentHouseComponent, currentHouseComponentStatus } = storeToRefs(houseComponentsStore);
+
+if (HOUSE_COMPONENT_PAGES.has(route.name?.toString() || "")) {
+  await houseComponentsStore.refreshHouseComponents();
+}
+
+if (CURRENT_HOUSE_COMPONENT_PAGES.has(route.name?.toString() || "")) {
+  await houseComponentsStore.refreshCurrentHouseComponent();
+}
 
 onMounted(() => {
   isSidebarOpen.value = localStorage.getItem("isSidebarOpen") === "true";
-  if (route.path !== "/dashboard") {
-    houseComponentsStore.refreshHouseComponents();
-  }
 });
 
-watchEffect(() => {
-  if (route.name === "dashboard") {
+effect(() => {
+  if (HOUSE_COMPONENT_PAGES.has(route.name?.toString() || "")) {
     sidebarStore.sidebarTopItems = [{
       id: "link-dashboard",
       label: "Maintenance Tasks",
@@ -27,7 +34,7 @@ watchEffect(() => {
       href: "/dashboard/add",
     }];
   }
-  else if (route.name === "dashboard-house-component-slug") {
+  else if (CURRENT_HOUSE_COMPONENT_PAGES.has(route.name?.toString() || "")) {
     sidebarStore.sidebarTopItems = [
       {
         id: "link-dashboard",
@@ -35,25 +42,29 @@ watchEffect(() => {
         icon: "tabler:arrow-left",
         href: "/dashboard",
       },
-      {
-        id: "link-dashboard",
-        label: currentHouseComponent.value ? currentHouseComponent.value.name : "View Logs",
-        icon: "tabler:tools",
-        to: { name: "dashboard-house-component-slug", params: { slug: currentHouseComponent.value?.slug } },
-      },
-      {
-        id: "link-house-component-edit",
-        label: "Edit House Component",
-        icon: "tabler:home-edit",
-        to: { name: "dashboard-house-component-slug-edit", params: { slug: currentHouseComponent.value?.slug } },
-      },
-      {
-        id: "link-add-maintenance-log",
-        label: "Add Maintenance Log",
-        icon: "tabler:circle-plus-filled",
-        to: { name: "dashboard-house-component-slug-add", params: { slug: currentHouseComponent.value?.slug } },
-      },
     ];
+    if (currentHouseComponent.value && currentHouseComponentStatus.value !== "pending") {
+      sidebarStore.sidebarTopItems.push(
+        {
+          id: "link-dashboard",
+          label: currentHouseComponent.value.name,
+          icon: "tabler:tools",
+          to: { name: "dashboard-house-component-slug", params: { slug: route.params.slug } },
+        },
+        {
+          id: "link-house-component-edit",
+          label: "Edit House Component",
+          icon: "tabler:home-edit",
+          to: { name: "dashboard-house-component-slug-edit", params: { slug: route.params.slug } },
+        },
+        {
+          id: "link-add-maintenance-log",
+          label: "Add Maintenance Log",
+          icon: "tabler:circle-plus-filled",
+          to: { name: "dashboard-house-component-slug-add", params: { slug: route.params.slug } },
+        },
+      );
+    }
   }
 });
 
@@ -81,6 +92,9 @@ function toggleSidebar() {
           name="tabler:chevron-right"
           size="32"
         />
+      </div>
+      <div v-if="route.path.startsWith('/dashboard/house-component') && currentHouseComponentStatus === 'pending'" class="flex items-center justify-center">
+        <div class="loading loading-spinner" />
       </div>
       <div class="flex flex-col">
         <SidebarButton
@@ -115,8 +129,21 @@ function toggleSidebar() {
         />
       </div>
     </div>
-    <div class="flex-1">
-      <NuxtPage />
+    <div class="bg-base-200 flex-1 overflow-auto">
+      <div
+        class="flex size-full"
+        :class="{
+          'flex-col': !EDIT_PAGES.has(route.name?.toString() || ''),
+        }"
+      >
+        <NuxtPage
+          :class="{
+            'shrink-0': EDIT_PAGES.has(route.name?.toString() || ''),
+            'w-96': EDIT_PAGES.has(route.name?.toString() || ''),
+          }"
+        />
+        <AppRightPane class="flex-1" />
+      </div>
     </div>
   </div>
 </template>

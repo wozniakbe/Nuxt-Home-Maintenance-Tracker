@@ -56,3 +56,15 @@ export async function insertHouseComponent(insertable: InsertHouseComponent, slu
     .returning();
   return created;
 }
+
+export async function updateHouseComponentBySlug(
+  updates: InsertHouseComponent,
+  slug: string,
+  userId: string,
+) {
+  const [updated] = await db.update(houseComponent).set(updates).where(and(
+    eq(houseComponent.slug, slug),
+    eq(houseComponent.userId, userId),
+  )).returning();
+  return updated;
+}
