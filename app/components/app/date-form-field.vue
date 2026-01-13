@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import formatDateISO from "~~/utils/format-date";
+import formatDateISO from "~/utils/format-date";
 
 const props = defineProps<{
   label: string;
