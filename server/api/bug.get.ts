@@ -1,5 +1,3 @@
-import defineAuthenticatedEventHandler from "~~/utils/define-authenticated-event-handler";
-
 export default defineAuthenticatedEventHandler(async () => {
   // we should not be getting here but having issues where the nested parent
   // /dashboard page is making calls to the house-components endpoint as

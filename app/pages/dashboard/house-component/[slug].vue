@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FetchError } from "ofetch";
 
-import formatDateISO from "~~/utils/format-date";
+import formatDateISO from "~/utils/format-date";
 
 const route = useRoute();
 const houseComponentsStore = useHouseComponentsStore();

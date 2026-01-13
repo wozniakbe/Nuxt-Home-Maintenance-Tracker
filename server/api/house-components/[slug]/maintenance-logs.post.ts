@@ -1,8 +1,6 @@
 import { findHouseComponent } from "~~/lib/db/queries/house-component";
 import { insertMaintenanceLog } from "~~/lib/db/queries/maintenance-logs";
 import { InsertMaintenanceLog } from "~~/lib/db/schema";
-import defineAuthenticatedEventHandler from "~~/utils/define-authenticated-event-handler";
-import sendZodError from "~~/utils/send-zod-error";
 
 export default defineAuthenticatedEventHandler(async (event) => {
   const slug = getRouterParam(event, "slug") as string;

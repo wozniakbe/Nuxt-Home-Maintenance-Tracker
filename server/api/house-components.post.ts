@@ -2,8 +2,6 @@ import type { DrizzleError } from "drizzle-orm";
 
 import { findHouseComponentByName, findUniqueSlug, insertHouseComponent } from "~~/lib/db/queries/house-component";
 import { InsertHouseComponent } from "~~/lib/db/schema";
-import defineAuthenticatedEventHandler from "~~/utils/define-authenticated-event-handler";
-import sendZodError from "~~/utils/send-zod-error";
 import slugify from "slug";
 
 export default defineAuthenticatedEventHandler(async (event) => {

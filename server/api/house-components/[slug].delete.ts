@@ -1,5 +1,4 @@
 import { removeHouseComponentBySlug } from "~~/lib/db/queries/house-component";
-import defineAuthenticatedEventHandler from "~~/utils/define-authenticated-event-handler";
 
 export default defineAuthenticatedEventHandler(async (event) => {
   const slug = getRouterParam(event, "slug") as string;
