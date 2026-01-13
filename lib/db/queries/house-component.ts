@@ -12,7 +12,11 @@ export async function findHouseComponent(slug: string, userId: string) {
   return db.query.houseComponent.findFirst({
     where: and(eq(houseComponent.slug, slug), eq(houseComponent.userId, userId)),
     with: {
-      maintenanceLogs: true,
+      maintenanceLogs: {
+        orderBy(fields, operators) {
+          return operators.desc(fields.startedAt);
+        },
+      },
     },
   });
 }

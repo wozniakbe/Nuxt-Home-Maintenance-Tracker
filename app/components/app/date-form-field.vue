@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import formatDateISO from "~~/utils/format-date";
+
 const props = defineProps<{
   label: string;
   name: string;
@@ -10,15 +12,6 @@ const props = defineProps<{
 const { handleBlur, value: inputValue, handleChange } = useField<number>(props.name, {
   initialValue: props.value,
 });
-
-function formatDateISO(value: number) {
-  try {
-    return new Date(value).toISOString().split("T")[0];
-  }
-  catch {
-    return "";
-  }
-}
 
 function dateChanged(event: Event) {
   const target = event.target as HTMLInputElement;

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { FetchError } from "ofetch";
 
+import formatDateISO from "~~/utils/format-date";
+
 const route = useRoute();
 const houseComponentsStore = useHouseComponentsStore();
 const {
@@ -51,7 +53,7 @@ onBeforeRouteUpdate((to) => {
 </script>
 
 <template>
-  <div class="min-h-64 p-4">
+  <div class="page-context-top">
     <div v-if="loading">
       <div class="loading" />
     </div>
@@ -111,6 +113,32 @@ onBeforeRouteUpdate((to) => {
           Add Maintenance Log
           <Icon name="tabler:circle-plus-filled" size="24" />
         </NuxtLink>
+      </div>
+      <div
+        v-if="route.name === 'dashboard-house-component-slug' && houseComponent?.maintenanceLogs.length"
+        class="component-list"
+      >
+        <ComponentCard
+          v-for="maintenanceLog in houseComponent.maintenanceLogs"
+          :id="maintenanceLog.id"
+          :key="maintenanceLog.id"
+          :to="{ name: 'dashboard-house-component-slug-id', params: { id: maintenanceLog.id } }"
+          :name="maintenanceLog.name"
+          :description="maintenanceLog.description"
+        >
+          <template #top>
+            <span v-if="maintenanceLog.endedAt && maintenanceLog.startedAt !== maintenanceLog.endedAt">
+              <p class="text-sm text-gray-500 italic">
+                {{ formatDateISO(maintenanceLog.startedAt) }} to {{ formatDateISO(maintenanceLog.endedAt) }}
+              </p>
+            </span>
+            <span v-else>
+              <p class="text-sm text-gray-500 italic">
+                {{ formatDateISO(maintenanceLog.startedAt) }}
+              </p>
+            </span>
+          </template>
+        </ComponentCard>
       </div>
     </div>
     <div v-if="route.name !== 'dashboard-house-component-slug'">
