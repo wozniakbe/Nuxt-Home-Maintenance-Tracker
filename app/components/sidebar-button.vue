@@ -25,7 +25,7 @@ const route = useRoute();
     >
       <Icon :name="props.icon" size="24" />
       <Transition name="grow">
-        <span v-if="showLabel">
+        <span v-if="showLabel" class="truncate">
           {{ props.label }}
         </span>
       </Transition>

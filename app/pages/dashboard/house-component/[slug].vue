@@ -115,7 +115,7 @@ onBeforeRouteUpdate((to) => {
         </NuxtLink>
       </div>
       <div
-        v-if="route.name === 'dashboard-house-component-slug' && houseComponent?.maintenanceLogs.length"
+        v-if="route.name === 'dashboard-house-component-slug' && !loading && houseComponent?.maintenanceLogs.length"
         class="component-list"
       >
         <ComponentCard
