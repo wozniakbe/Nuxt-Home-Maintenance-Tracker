@@ -1,6 +1,6 @@
-import type { SelectHouseComponentWithLogs } from "~~/lib/db/schema";
+import type { SelectHouseComponentWithLogs, SelectMaintenanceLog } from "~~/lib/db/schema";
 
-import { CURRENT_HOUSE_COMPONENT_PAGES, HOUSE_COMPONENT_PAGES } from "~~/lib/constants";
+import { CURRENT_HOUSE_COMPONENT_PAGES, CURRENT_MAINTENANCE_LOG_PAGES, HOUSE_COMPONENT_PAGES } from "~~/lib/constants";
 
 export const useHouseComponentsStore = defineStore("useHouseComponentsStore", () => {
   const route = useRoute();
@@ -17,12 +17,28 @@ export const useHouseComponentsStore = defineStore("useHouseComponentsStore", ()
       return "/api/bug";
     return `/api/house-components/${route.params.slug}`;
   });
+  const componentLogUrlWithSlugAndId = computed(() => {
+    if (!route.params.slug || !route.params.id)
+      return "/api/bug";
+    return `/api/house-components/${route.params.slug}/${route.params.id}`;
+  },
+  );
   const {
     data: currentHouseComponent,
     status: currentHouseComponentStatus,
     error: currentHouseComponentError,
     refresh: refreshCurrentHouseComponent,
   } = useFetch<SelectHouseComponentWithLogs>(componentUrlWithSlug, {
+    lazy: true,
+    immediate: false,
+  });
+
+  const {
+    data: currentMaintenanceLog,
+    status: currentMaintenanceLogStatus,
+    error: currentMaintenanceLogError,
+    refresh: refreshCurrentMaintenanceLog,
+  } = useFetch<SelectMaintenanceLog>(componentLogUrlWithSlugAndId, {
     lazy: true,
     immediate: false,
   });
@@ -57,6 +73,9 @@ export const useHouseComponentsStore = defineStore("useHouseComponentsStore", ()
       });
       sidebarStore.sidebarItems = sidebarItems;
     }
+    else if (currentMaintenanceLog.value && CURRENT_MAINTENANCE_LOG_PAGES.has(route.name?.toString() || "")) {
+      sidebarStore.sidebarItems = [];
+    }
     sidebarStore.loading = houseComponentsStatus.value === "pending" || currentHouseComponentStatus.value === "pending";
   });
   return {
@@ -67,5 +86,9 @@ export const useHouseComponentsStore = defineStore("useHouseComponentsStore", ()
     currentHouseComponentStatus,
     currentHouseComponentError,
     refreshCurrentHouseComponent,
+    currentMaintenanceLog,
+    currentMaintenanceLogStatus,
+    currentMaintenanceLogError,
+    refreshCurrentMaintenanceLog,
   };
 });
