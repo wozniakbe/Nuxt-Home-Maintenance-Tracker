@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CURRENT_HOUSE_COMPONENT_PAGES, EDIT_PAGES, HOUSE_COMPONENT_PAGES } from "~~/lib/constants";
+import { CURRENT_HOUSE_COMPONENT_PAGES, CURRENT_MAINTENANCE_LOG_PAGES, EDIT_PAGES, HOUSE_COMPONENT_PAGES } from "~~/lib/constants";
 
 const isSidebarOpen = ref(true);
 const route = useRoute();
@@ -12,8 +12,12 @@ if (HOUSE_COMPONENT_PAGES.has(route.name?.toString() || "")) {
   await houseComponentsStore.refreshHouseComponents();
 }
 
-if (CURRENT_HOUSE_COMPONENT_PAGES.has(route.name?.toString() || "")) {
+if (CURRENT_HOUSE_COMPONENT_PAGES.has(route.name?.toString() || "") || CURRENT_MAINTENANCE_LOG_PAGES.has(route.name?.toString() || "")) {
   await houseComponentsStore.refreshCurrentHouseComponent();
+}
+
+if (CURRENT_MAINTENANCE_LOG_PAGES.has(route.name?.toString() || "")) {
+  await houseComponentsStore.refreshCurrentMaintenanceLog();
 }
 
 onMounted(() => {
@@ -66,6 +70,21 @@ effect(() => {
       );
     }
   }
+  else if (CURRENT_MAINTENANCE_LOG_PAGES.has(route.name?.toString() || "")) {
+    if (currentHouseComponent.value && currentHouseComponentStatus.value !== "pending") {
+      sidebarStore.sidebarTopItems = [{
+        id: "link-house-component",
+        label: `Back to "${currentHouseComponent.value.name}"`,
+        to: {
+          name: "dashboard-house-component-slug",
+          params: {
+            slug: route.params.slug,
+          },
+        },
+        icon: "tabler:arrow-left",
+      }];
+    }
+  }
 });
 
 function toggleSidebar() {
@@ -78,18 +97,18 @@ function toggleSidebar() {
   <div class="flex flex-1">
     <div class="bg-base-100 transition-all duration-300" :class="{ 'w-64': isSidebarOpen, 'w-16': !isSidebarOpen }">
       <div
-        class="hover:bg-base-200 flex p-2 hover:cursor-pointer"
+        class="hover:bg-base-200 mr-0.5 flex p-2 hover:cursor-pointer "
         :class="{ 'justify-center': !isSidebarOpen, 'justify-end': isSidebarOpen }"
         @click="toggleSidebar"
       >
         <Icon
           v-if="isSidebarOpen"
-          name="tabler:chevron-left"
+          name="tabler:layout-sidebar-left-collapse"
           size="32"
         />
         <Icon
           v-else
-          name="tabler:chevron-right"
+          name="tabler:layout-sidebar-right-collapse-filled"
           size="32"
         />
       </div>
