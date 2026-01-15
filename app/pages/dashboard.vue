@@ -4,6 +4,10 @@ import { CURRENT_HOUSE_COMPONENT_PAGES, CURRENT_MAINTENANCE_LOG_PAGES, EDIT_PAGE
 const isSidebarOpen = ref(true);
 const route = useRoute();
 const sidebarStore = useSidebarStore();
+// TODO: wonder if this here is why I am getting the empty slug and hitting the /bug endpoint
+// since this runs on every child page load and when it runs for this page, there is no slug
+// seems weird to have SSR run 3 times for a child page 3 deep, need to investigate if I can prevent that
+// or maybe they are just using the cached response and not duplicating the calls. Need to confirm
 const houseComponentsStore = useHouseComponentsStore();
 
 const { currentHouseComponent, currentHouseComponentStatus } = storeToRefs(houseComponentsStore);
