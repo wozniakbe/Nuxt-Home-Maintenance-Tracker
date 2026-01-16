@@ -13,6 +13,12 @@ const errorMessage = computed(() => error.value?.statusMessage);
 onMounted(() => {
   houseComponentsStore.refreshCurrentMaintenanceLog();
 });
+
+onBeforeRouteUpdate((to) => {
+  if (to.name === "dashboard-house-component-slug-id") {
+    houseComponentsStore.refreshCurrentMaintenanceLog();
+  }
+});
 </script>
 
 <template>
@@ -40,6 +46,9 @@ onMounted(() => {
       <p class="text-sm">
         {{ maintenanceLog.description }}
       </p>
+    </div>
+    <div v-else>
+      <NuxtPage />
     </div>
   </div>
 </template>

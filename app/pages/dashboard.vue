@@ -86,6 +86,28 @@ effect(() => {
           },
         },
         icon: "tabler:arrow-left",
+      }, {
+        id: "link-view-maintenance-log",
+        label: "View Log",
+        to: {
+          name: "dashboard-house-component-slug-id",
+          params: {
+            slug: route.params.slug,
+            id: route.params.id,
+          },
+        },
+        icon: "tabler:binoculars-filled",
+      }, {
+        id: "link-edit-maintenance-log",
+        label: "Edit Log",
+        to: {
+          name: "dashboard-house-component-slug-id-edit",
+          params: {
+            slug: route.params.slug,
+            id: route.params.id,
+          },
+        },
+        icon: "tabler:home-edit",
       }];
     }
   }
