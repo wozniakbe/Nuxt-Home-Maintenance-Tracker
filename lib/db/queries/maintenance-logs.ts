@@ -45,3 +45,17 @@ export async function updateMaintenanceLog(
 
   return updated;
 }
+
+export async function deleteMaintenanceLog(
+  id: number,
+  userId: string,
+) {
+  const deleted = await db.delete(maintenanceLog).where(
+    and(
+      eq(maintenanceLog.id, id),
+      eq(maintenanceLog.userId, userId),
+    ),
+  ).returning();
+
+  return deleted;
+}
