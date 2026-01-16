@@ -14,6 +14,7 @@ export const CURRENT_HOUSE_COMPONENT_PAGES = new Set([
 ]);
 export const EDIT_PAGES = new Set([
   "dashboard-house-component-slug-edit",
+  "dashboard-house-component-slug-id-edit",
   "dashboard-house-component-slug-add",
   "dashboard-add",
 ]);

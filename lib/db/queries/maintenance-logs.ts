@@ -32,3 +32,16 @@ export async function insertMaintenanceLog(
 
   return inserted;
 }
+
+export async function updateMaintenanceLog(
+  id: number,
+  updates: InsertMaintenanceLog,
+  userId: string,
+) {
+  const [updated] = await db.update(maintenanceLog).set({ ...updates }).where(and(
+    eq(maintenanceLog.id, id),
+    eq(maintenanceLog.userId, userId),
+  )).returning();
+
+  return updated;
+}
