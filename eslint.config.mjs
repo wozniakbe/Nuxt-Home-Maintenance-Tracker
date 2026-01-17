@@ -18,7 +18,7 @@ export default withNuxt(
       semi: true,
       quotes: "double",
     },
-    ignores: [".pnpm-store/**", "**/migrations/*"],
+    ignores: [".pnpm-store/**", "**/migrations/*", "docker-compose.yml"],
   }, {
     rules: {
       "vue/max-attributes-per-line": ["error", {

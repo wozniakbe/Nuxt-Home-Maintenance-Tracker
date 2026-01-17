@@ -3,9 +3,12 @@ import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import z from "zod";
 
+import type { SelectMaintenanceLogImage } from "./maintenance-log-image";
+
 import { DescriptionSchema, NameSchema } from "../zod-schemas";
 import { user } from "./auth";
 import { houseComponent } from "./house-component";
+import { maintenanceLogImage } from "./maintenance-log-image";
 
 export const maintenanceLog = sqliteTable("maintenanceLog", {
   id: int().primaryKey({ autoIncrement: true }),
@@ -19,11 +22,12 @@ export const maintenanceLog = sqliteTable("maintenanceLog", {
   updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
 
-export const maintenanceLogRelations = relations(maintenanceLog, ({ one }) => ({
+export const maintenanceLogRelations = relations(maintenanceLog, ({ one, many }) => ({
   component: one(houseComponent, {
     fields: [maintenanceLog.componentId],
     references: [houseComponent.id],
   }),
+  images: many(maintenanceLogImage),
 }));
 
 export const InsertMaintenanceLog = createInsertSchema(maintenanceLog, {
@@ -52,3 +56,6 @@ export const InsertMaintenanceLog = createInsertSchema(maintenanceLog, {
 
 export type InsertMaintenanceLog = z.infer<typeof InsertMaintenanceLog>;
 export type SelectMaintenanceLog = typeof maintenanceLog.$inferSelect;
+export type SelectMaintenaceLogWithImages = SelectMaintenanceLog & {
+  images: SelectMaintenanceLogImage[];
+};
