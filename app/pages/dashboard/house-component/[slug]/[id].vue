@@ -101,6 +101,13 @@ onBeforeRouteUpdate((to) => {
       <p class="text-sm">
         {{ maintenanceLog.description }}
       </p>
+      <div v-if="!maintenanceLog.images.length">
+        <NuxtLink :to="{ name: 'dashboard-house-component-slug-id-images', params: { slug: route.params.slug, id: route.params.id } }" class="btn btn-primary w-40">
+          Add Image
+          <Icon name="tabler:photo-cog" size="24" />
+        </NuxtLink>
+      </div>
+      <ImageList v-else :images="maintenanceLog.images" />
     </div>
     <div v-else>
       <NuxtPage />

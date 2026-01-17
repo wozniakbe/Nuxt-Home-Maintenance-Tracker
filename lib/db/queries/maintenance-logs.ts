@@ -14,6 +14,13 @@ export async function findMaintenanceLog(
       eq(maintenanceLog.id, id),
       eq(maintenanceLog.userId, userId),
     ),
+    with: {
+      images: {
+        orderBy(fields, operators) {
+          return operators.desc(fields.createdAt);
+        },
+      },
+    },
   });
 
   return foundLog;

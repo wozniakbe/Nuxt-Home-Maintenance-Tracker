@@ -6,6 +6,7 @@ export const CURRENT_MAINTENANCE_LOG_PAGES = new Set([
   "dashboard-house-component-slug-id",
   "dashboard-house-component-slug-id-add",
   "dashboard-house-component-slug-id-edit",
+  "dashboard-house-component-slug-id-images",
 ]);
 export const CURRENT_HOUSE_COMPONENT_PAGES = new Set([
   "dashboard-house-component-slug",

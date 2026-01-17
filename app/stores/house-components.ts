@@ -1,4 +1,4 @@
-import type { SelectHouseComponentWithLogs, SelectMaintenanceLog } from "~~/lib/db/schema";
+import type { SelectHouseComponentWithLogs, SelectMaintenaceLogWithImages } from "~~/lib/db/schema";
 
 import { CURRENT_HOUSE_COMPONENT_PAGES, CURRENT_MAINTENANCE_LOG_PAGES, HOUSE_COMPONENT_PAGES } from "~~/lib/constants";
 
@@ -38,7 +38,7 @@ export const useHouseComponentsStore = defineStore("useHouseComponentsStore", ()
     status: currentMaintenanceLogStatus,
     error: currentMaintenanceLogError,
     refresh: refreshCurrentMaintenanceLog,
-  } = useFetch<SelectMaintenanceLog>(componentLogUrlWithSlugAndId, {
+  } = useFetch<SelectMaintenaceLogWithImages>(componentLogUrlWithSlugAndId, {
     lazy: true,
     immediate: false,
   });

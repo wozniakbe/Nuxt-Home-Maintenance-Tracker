@@ -108,6 +108,17 @@ effect(() => {
           },
         },
         icon: "tabler:home-edit",
+      }, {
+        id: "link-maintenance-log-images",
+        label: "Manage Images",
+        to: {
+          name: "dashboard-house-component-slug-id-images",
+          params: {
+            slug: route.params.slug,
+            id: route.params.id,
+          },
+        },
+        icon: "tabler:photo-cog",
       }];
     }
   }
