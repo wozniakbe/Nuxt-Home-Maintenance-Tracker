@@ -21,6 +21,8 @@ export default defineAuthenticatedEventHandler(async (event) => {
   const deleted = await deleteMaintenanceLogImage(Number(imageId), event.context.user.id);
 
   if (deleted) {
+    // TODO: need to cascade this delete logic to other delete endpoints
+    // or set up a cron job to check for orphaned files
     const client = createS3Client();
     const command = new DeleteObjectCommand({
       Bucket: env.S3_BUCKET,

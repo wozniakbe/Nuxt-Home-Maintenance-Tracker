@@ -17,7 +17,7 @@ export const houseComponent = sqliteTable("houseComponent", {
   description: text(),
   floor: int().notNull(),
   room: text().notNull(),
-  userId: text().notNull().references(() => user.id),
+  userId: text().notNull().references(() => user.id, { onDelete: "cascade" }),
   createdAt: int().notNull().$default(() => Date.now()),
   updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 }, t => [
