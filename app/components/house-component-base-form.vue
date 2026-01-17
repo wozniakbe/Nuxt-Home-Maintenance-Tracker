@@ -2,6 +2,8 @@
 import type { FetchError } from "ofetch";
 import type { ZodSchema } from "zod";
 
+import getFetchErrorMessage from "~/utils/get-fetch-error-message";
+
 const props = defineProps<{
   initialValues?: T | null;
   schema: ZodSchema;
@@ -35,7 +37,7 @@ const onSubmit = handleSubmit(async (values: T) => {
     if (error.data?.data) {
       setErrors(error.data.data);
     }
-    submitError.value = error.data?.statusMessage || error.statusMessage || "An unknown error occurred.";
+    submitError.value = getFetchErrorMessage(error);
   }
   loading.value = false;
 });

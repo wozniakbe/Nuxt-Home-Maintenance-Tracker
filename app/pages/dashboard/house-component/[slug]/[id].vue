@@ -32,7 +32,7 @@ async function confirmDelete() {
   }
   catch (e) {
     const error = e as FetchError;
-    deleteError.value = error.data?.statusMessage || error.statusMessage || "An unknown error occurred.";
+    deleteError.value = getFetchErrorMessage(error);
   }
   isDeleting.value = false;
 }

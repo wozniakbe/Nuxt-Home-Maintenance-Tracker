@@ -20,6 +20,7 @@ const config = useRuntimeConfig();
           class="size-full object-cover"
           :src="`${config.public.s3BucketUrl}/${image.key}`"
         >
+        <slot :image />
       </div>
     </div>
   </div>

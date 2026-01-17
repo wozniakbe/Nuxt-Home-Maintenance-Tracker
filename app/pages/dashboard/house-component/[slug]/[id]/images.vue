@@ -1,16 +1,49 @@
 <script lang="ts" setup>
+import type { SelectMaintenanceLogImage } from "~~/lib/db/schema";
+
 import { FetchError } from "ofetch";
+
+import getFetchErrorMessage from "~/utils/get-fetch-error-message";
+
+const { $csrfFetch } = useNuxtApp();
+const route = useRoute();
+const houseComponentStore = useHouseComponentsStore();
 
 const image = ref<File | null>(null);
 const previewUrl = ref<string | null>(null);
 const loading = ref(false);
-const errorMessage = ref("");
 const imageInput = useTemplateRef("imageInput");
+const isOpen = ref(false);
+const deletingImage = ref<SelectMaintenanceLogImage | null>(null);
+const isDeleting = ref(false);
+const errorMessage = ref("");
 
-const route = useRoute();
-const { $csrfFetch } = useNuxtApp();
+async function onClosed() {
+  deletingImage.value = null;
+  isOpen.value = false;
+}
 
-const houseComponentStore = useHouseComponentsStore();
+async function confirmDelete() {
+  if (!deletingImage.value) {
+    return;
+  }
+  isOpen.value = false;
+  try {
+    isDeleting.value = true;
+    errorMessage.value = "";
+    await $fetch(`/api/house-components/${route.params.slug}/${route.params.id}/image/${deletingImage.value.id}`, {
+      method: "DELETE",
+    });
+    await houseComponentStore.refreshCurrentMaintenanceLog();
+  }
+  catch (e) {
+    const error = e as FetchError;
+    errorMessage.value = getFetchErrorMessage(error);
+  }
+  isDeleting.value = false;
+  deletingImage.value = null;
+}
+
 const {
   currentMaintenanceLog: maintenanceLog,
 } = storeToRefs(houseComponentStore);
@@ -21,6 +54,11 @@ function selectImage(event: Event) {
     image.value = file;
     previewUrl.value = URL.createObjectURL(file);
   }
+}
+
+async function deleteImage(image: SelectMaintenanceLogImage) {
+  deletingImage.value = image;
+  isOpen.value = true;
 }
 
 async function getChecksum(blob: Blob) {
@@ -143,7 +181,32 @@ async function uploadImage() {
           <Icon name="tabler:photo-share" size="24" />
         </button>
       </div>
-      <ImageList class="ml-2" :images="maintenanceLog?.images || []" />
+      <ImageList class="ml-2" :images="maintenanceLog?.images || []">
+        <template #default="{ image: item }">
+          <button
+            :disabled="deletingImage === item && isDeleting"
+            class="btn btn-xs btn-error"
+            @click="deleteImage(item)"
+          >
+            Delete
+            <div v-if="deletingImage === item && isDeleting" class="loading loading-xs" />
+            <Icon
+              v-else
+              name="tabler:trash-x-filled"
+              size="18"
+            />
+          </button>
+        </template>
+      </ImageList>
     </div>
+    <AppDialog
+      title="Are you sure?"
+      description="Deleting this image cannot be undone. Do you really want to do this?"
+      confirm-label="Yes, delete"
+      confirm-class="btn-error"
+      :is-open="isOpen"
+      @on-closed="onClosed"
+      @on-confirmed="confirmDelete"
+    />
   </div>
 </template>
