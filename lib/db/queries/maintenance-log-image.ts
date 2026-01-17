@@ -1,3 +1,5 @@
+import { and, eq } from "drizzle-orm";
+
 import type { InsertMaintenanceLogImage } from "../schema";
 
 import db from "..";
@@ -15,4 +17,15 @@ export async function insertMaintenanceLogImage(
   }).returning();
 
   return inserted;
+}
+
+export async function deleteMaintenanceLogImage(
+  id: number,
+  userId: string,
+) {
+  const deleted = await db.delete(maintenanceLogImage).where(
+    and(eq(maintenanceLogImage.id, id), eq(maintenanceLogImage.userId, userId)),
+  ).returning();
+
+  return deleted[0];
 }
