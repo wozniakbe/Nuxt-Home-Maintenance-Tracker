@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "bf305bfa-b0e5-45e3-938b-94737f25cc42",
+  "id": "1f34f434-654b-4c4b-91ec-e103f9edfa59",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
@@ -430,6 +430,14 @@
             "slug"
           ],
           "isUnique": true
+        },
+        "houseComponent_name_userId_unique": {
+          "name": "houseComponent_name_userId_unique",
+          "columns": [
+            "name",
+            "user_id"
+          ],
+          "isUnique": true
         }
       },
       "foreignKeys": {
@@ -443,7 +451,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -479,7 +487,7 @@
           "name": "started_at",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "ended_at": {

@@ -61,15 +61,16 @@ CREATE TABLE `houseComponent` (
 	`user_id` text NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
-	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `houseComponent_slug_unique` ON `houseComponent` (`slug`);--> statement-breakpoint
+CREATE UNIQUE INDEX `houseComponent_name_userId_unique` ON `houseComponent` (`name`,`user_id`);--> statement-breakpoint
 CREATE TABLE `maintenanceLog` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`name` text NOT NULL,
 	`description` text,
-	`started_at` integer,
+	`started_at` integer NOT NULL,
 	`ended_at` integer,
 	`component_id` integer NOT NULL,
 	`user_id` text NOT NULL,
