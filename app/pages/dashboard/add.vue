@@ -3,12 +3,10 @@ import type { InsertHouseComponent } from "~~/lib/db/schema";
 
 const { $csrfFetch } = useNuxtApp();
 async function onSubmit(values: InsertHouseComponent) {
-  console.log(values);
-  const result = await $csrfFetch("/api/house-components", {
+  await $csrfFetch("/api/house-components", {
     method: "post",
     body: values,
   });
-  console.log(result);
 }
 
 function onSubmitComplete() {
