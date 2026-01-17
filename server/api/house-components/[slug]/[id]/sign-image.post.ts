@@ -34,7 +34,7 @@ export default defineAuthenticatedEventHandler(async (event) => {
     Key: key,
     Expires: 120,
     Fields: {
-      "x-amz-checksum-sha-256": result.data.checksum,
+      "x-amz-checksum-sha256": result.data.checksum,
     },
     Conditions: [
       ["content-length-range", result.data.contentLength, result.data.contentLength],
