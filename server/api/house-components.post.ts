@@ -7,13 +7,13 @@ import slugify from "slug";
 export default defineAuthenticatedEventHandler(async (event) => {
   const result = await readValidatedBody(event, InsertHouseComponent.safeParse);
 
-  console.log(result);
+  console.info(result);
 
   if (!result.success) {
     return sendZodError(event, result.error);
   }
 
-  console.log("not zod error");
+  console.info("not zod error");
 
   const existingComponent = await findHouseComponentByName(result.data, event.context.user.id);
   if (existingComponent) {
@@ -26,7 +26,7 @@ export default defineAuthenticatedEventHandler(async (event) => {
   const slug = await findUniqueSlug(slugify(result.data.name));
 
   try {
-    console.log("inside of try");
+    console.info("inside of try");
     return await insertHouseComponent(result.data, slug, event.context.user.id);
   }
   catch (e) {
@@ -38,7 +38,7 @@ export default defineAuthenticatedEventHandler(async (event) => {
         statusMessage: "Slug must be unique (the item name is used to generate the slug).",
       });
     }
-    console.log(error);
+    console.info(error);
     throw error;
   }
 });
