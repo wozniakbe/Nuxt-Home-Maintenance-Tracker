@@ -5,7 +5,7 @@ import z from "zod";
 
 import type { SelectMaintenanceLogImage } from "./maintenance-log-image";
 
-import { DescriptionSchema, NameSchema } from "../zod-schemas";
+import { DateSchema, DescriptionSchema, NameSchema } from "../zod-schemas";
 import { user } from "./auth";
 import { houseComponent } from "./house-component";
 import { maintenanceLogImage } from "./maintenance-log-image";
@@ -33,6 +33,7 @@ export const maintenanceLogRelations = relations(maintenanceLog, ({ one, many })
 export const InsertMaintenanceLog = createInsertSchema(maintenanceLog, {
   name: NameSchema,
   description: DescriptionSchema,
+  startedAt: DateSchema,
 }).omit({
   id: true,
   userId: true,

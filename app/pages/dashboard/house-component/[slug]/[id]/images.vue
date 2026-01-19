@@ -64,7 +64,7 @@ async function deleteImage(image: SelectMaintenanceLogImage) {
 async function getChecksum(blob: Blob) {
   const arrayBuffer = await blob.arrayBuffer();
   const hashBuffer = await crypto.subtle.digest("SHA-256", arrayBuffer);
-  return btoa(String.fromCharCode(...new Uint8Array(hashBuffer)));
+  return btoa(String.fromCodePoint(...new Uint8Array(hashBuffer)));
 }
 
 async function uploadImage() {

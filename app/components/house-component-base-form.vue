@@ -45,7 +45,7 @@ const onSubmit = handleSubmit(async (values: T) => {
 onBeforeRouteLeave(() => {
   if (meta.value.dirty && !submitted.value) {
     // eslint-disable-next-line no-alert
-    const confirm = window.confirm("Are you sure you want to leave? All unsaved changes will be lost.");
+    const confirm = globalThis.confirm("Are you sure you want to leave? All unsaved changes will be lost.");
     if (!confirm) {
       return false;
     }
