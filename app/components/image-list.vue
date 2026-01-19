@@ -19,6 +19,7 @@ const config = useRuntimeConfig();
         <img
           class="size-full object-cover"
           :src="`${config.public.s3BucketUrl}/${image.key}`"
+          alt="Information regarding the maintenance performed!"
         >
         <slot :image />
       </div>
