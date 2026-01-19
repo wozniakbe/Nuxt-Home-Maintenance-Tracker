@@ -1,9 +1,16 @@
 <script lang="ts" setup>
 const authStore = useAuthStore();
+
+// useState is SSR-safe and will hydrate properly
+const mounted = useState("auth-button-mounted", () => false);
+
+onMounted(() => {
+  mounted.value = true;
+});
 </script>
 
 <template>
-  <div v-if="!authStore.loading && authStore.user" class="dropdown dropdown-end">
+  <div v-if="mounted && !authStore.loading && authStore.user" class="dropdown dropdown-end">
     <div
       tabindex="0"
       role="button"
@@ -27,12 +34,12 @@ const authStore = useAuthStore();
   </div>
   <button
     v-else
-    :disabled="authStore.loading"
+    :disabled="!mounted || authStore.loading"
     class="btn btn-accent"
     @click="authStore.signIn"
   >
-    Sign In With Github
-    <span v-if="authStore.loading" class="loading loading-spinner loading-md" />
+    {{ !mounted || authStore.loading ? 'Loading...' : 'Sign In With Github' }}
+    <span v-if="!mounted || authStore.loading" class="loading loading-spinner loading-md" />
     <Icon
       v-else
       name="tabler:brand-github"
